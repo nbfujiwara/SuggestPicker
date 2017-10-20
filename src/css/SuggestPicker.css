@@ -1,0 +1,74 @@
+@charset "UTF-8";
+
+.SuggestPickerMain{
+    background-color: #ffeeee;
+    width:500px;
+    padding:10px;
+    border-radius: 5px;
+}
+
+
+
+
+
+.SuggestPickerMain ul{
+    margin:0;
+    padding:0;
+}
+.SuggestPickerMain li{
+    display: inline-block;
+    list-style-type: none;
+}
+.SuggestPickerMain li.sp_item{
+    background-color: #72E672;
+    padding:5px;
+    margin:5px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+.SuggestPickerMain li.sp_item img{
+    margin-right:5px;
+    display: inline-block;
+    list-style-type: none;
+}
+.SuggestPickerMain li.sp_item.sp_selected{
+    background-color: #FD7D83;
+}
+.SuggestPickerMain li.sp_item.sp_noList{
+    background-color: #CCCCCC;
+}
+
+.SuggestPickerMain li.sp_input{
+}
+.SuggestPickerMain li.sp_input input[type=text]{
+    border: none;
+    background-color: transparent;
+    box-shadow:none;
+    outline: 0 none black;
+    height:30px;
+    width:100px;
+}
+
+
+.SuggestPickerList {
+    position: absolute;
+    top:0;
+    left:0;
+    margin:0;
+    padding:0;
+    max-height:300px;
+    overflow-y: scroll;
+    width:300px;
+    border:1px solid black;
+    display: none;
+}
+.SuggestPickerList li{
+    list-style-type: none;
+    padding:10px;
+    cursor: pointer;
+    box-sizing: border-box;
+    background-color: #ffffff;
+}
+.SuggestPickerList li.sp_target{
+    background-color: #72E672;
+}
