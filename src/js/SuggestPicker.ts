@@ -2,6 +2,10 @@
 
 module SuggestPicker{
 	export class Form{
+        public static EVENT_APPEND = 'ev_append';
+        public static EVENT_REMOVE = 'ev_remove';
+
+
 		private _mainElement = null;
 		private _inputElement = null;
 		private _listElement = null;
@@ -140,6 +144,13 @@ module SuggestPicker{
 		}
 
 
+
+		private _onChangeItemHandler(type){
+            if(this._params.onChangeCallback === null){
+            	return ;
+            }
+            this._params.onChangeCallback(type , this.getItems());
+		}
 
 		private _showList(){
 			this._isSelectedFromList = false;
@@ -291,6 +302,7 @@ module SuggestPicker{
 				this._prevTextValue = itemValue;
 				this._inputElement.val(itemValue);
 				this._refreshList(itemValue);
+                this._onChangeItemHandler(Form.EVENT_REMOVE);
 			}else{
 				var isRemoveSelect = itemElm.hasClass('sp_selected');
 				this._clearSelectedItem();
@@ -306,6 +318,7 @@ module SuggestPicker{
 			var itemElm = $(e.target).parent();
 			if(itemElm.hasClass('sp_selected')){
 				itemElm.remove();
+                this._onChangeItemHandler(Form.EVENT_REMOVE);
 			}else{
 				this._clearSelectedItem();
 				itemElm.addClass('sp_selected');
@@ -356,6 +369,7 @@ module SuggestPicker{
 					this._appendItem(this._inputElement.val() , '');
 				}
 			}
+            this._onChangeItemHandler(Form.EVENT_APPEND);
 
 			this._inputElement.val('');
 			this._prevTextValue = '';
@@ -374,6 +388,7 @@ module SuggestPicker{
 			if(selectedItemElms.length){
 				targetItemElm = selectedItemElms.get(0);
 				targetItemElm.remove();
+                this._onChangeItemHandler(Form.EVENT_REMOVE);
 			}else{
 				targetItemElm = this._itemsElement.children('.sp_item').last();
 				targetItemElm.addClass('sp_selected');
@@ -520,7 +535,8 @@ module SuggestPicker{
 		public noListLabel = '該当なし';
 		public listMax = 20;
 		public single = false;
-		public hideListOnEmpty = false;
+        public hideListOnEmpty = false;
+        public onChangeCallback = null;
 	}
 
 	class Device{

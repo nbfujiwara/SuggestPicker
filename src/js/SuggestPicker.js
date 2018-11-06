@@ -114,6 +114,12 @@ var SuggestPicker;
             });
             return itemList;
         };
+        Form.prototype._onChangeItemHandler = function (type) {
+            if (this._params.onChangeCallback === null) {
+                return;
+            }
+            this._params.onChangeCallback(type, this.getItems());
+        };
         Form.prototype._showList = function () {
             this._isSelectedFromList = false;
             this._refreshList(this._inputElement.val());
@@ -252,6 +258,7 @@ var SuggestPicker;
                 this._prevTextValue = itemValue;
                 this._inputElement.val(itemValue);
                 this._refreshList(itemValue);
+                this._onChangeItemHandler(Form.EVENT_REMOVE);
             }
             else {
                 var isRemoveSelect = itemElm.hasClass('sp_selected');
@@ -267,6 +274,7 @@ var SuggestPicker;
             var itemElm = $(e.target).parent();
             if (itemElm.hasClass('sp_selected')) {
                 itemElm.remove();
+                this._onChangeItemHandler(Form.EVENT_REMOVE);
             }
             else {
                 this._clearSelectedItem();
@@ -315,6 +323,7 @@ var SuggestPicker;
                     this._appendItem(this._inputElement.val(), '');
                 }
             }
+            this._onChangeItemHandler(Form.EVENT_APPEND);
             this._inputElement.val('');
             this._prevTextValue = '';
             this._listElement.hide();
@@ -328,6 +337,7 @@ var SuggestPicker;
             if (selectedItemElms.length) {
                 targetItemElm = selectedItemElms.get(0);
                 targetItemElm.remove();
+                this._onChangeItemHandler(Form.EVENT_REMOVE);
             }
             else {
                 targetItemElm = this._itemsElement.children('.sp_item').last();
@@ -442,6 +452,8 @@ var SuggestPicker;
         Form.prototype._createCloseElement = function () {
             return $('<img width="12" height="12" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAaVBMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKCgoAAAASEhIKCgoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAVhQG9AAAAInRSTlMA8/B0UUf22KV9OikhHQ4C5t2UbExAGNDLysCxnnBvZTQHXpJmjAAAAIZJREFUGNNtj1cSgzAMRIVtcAuY0NKb7n/ISDsmX3k/2l2VGdE/+r6KPKBs3h8gVnP7aP/C7LOI1jAHmYksHDMtjQpHNAQkttMSi4yWO+9YAmVi0D1p54pg+vm5QTC21VuuNA4+Qgdc0eQBv9Q52Uojs9HtWfxZn3gbs2L3xacNIqV63Un/C9flDdGyoibdAAAAAElFTkSuQmCC" alt="">');
         };
+        Form.EVENT_APPEND = 'ev_append';
+        Form.EVENT_REMOVE = 'ev_remove';
         return Form;
     }());
     SuggestPicker.Form = Form;
@@ -452,6 +464,7 @@ var SuggestPicker;
             this.listMax = 20;
             this.single = false;
             this.hideListOnEmpty = false;
+            this.onChangeCallback = null;
         }
         return Params;
     }());
