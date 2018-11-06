@@ -1,7 +1,7 @@
 /// <reference path="../../libs/jquery_1.3br.d.ts"/>
 var SuggestPicker;
 (function (SuggestPicker) {
-    var Form = (function () {
+    var Form = /** @class */ (function () {
         function Form(elementId) {
             var _this = this;
             this._mainElement = null;
@@ -74,6 +74,21 @@ var SuggestPicker;
             }
             return true;
         };
+        Form.prototype.setItemsByValues = function (valueList) {
+            for (var i = 0; i < valueList.length; i++) {
+                for (var k = 0; k < this._allList.length; k++) {
+                    if (this._allList[k].value == valueList[i]) {
+                        this._appendItem(this._allList[k].label, this._allList[k].value);
+                    }
+                }
+            }
+            return true;
+        };
+        Form.prototype.clearItems = function () {
+            while (this._itemsElement.children('.sp_item').length > 0) {
+                this._itemsElement.children('.sp_item').get(0).remove();
+            }
+        };
         Form.prototype._adjustItem = function (itemRow) {
             if (!itemRow.hasOwnProperty('value') && !itemRow.hasOwnProperty('label')) {
                 return null;
@@ -129,15 +144,11 @@ var SuggestPicker;
                 rowElm.attr('my_val', dataList[i].value);
                 //console.log( dataList[i].value + ',' + rowElm.val() + ',' + rowElm.attr('my_val'));
                 var hoverFunc = (function (_func, arg1) {
-                    return function (e) {
-                        _func(arg1);
-                    };
+                    return function (e) { _func(arg1); };
                 })(function (_a1) { return _this._mouseOverListTarget(_a1); }, i);
                 rowElm.hover(hoverFunc);
                 var clickFunc = (function (_func, arg1) {
-                    return function (e) {
-                        _func(arg1);
-                    };
+                    return function (e) { _func(arg1); };
                 })(function (_a1) { return _this._clickListTarget(_a1); }, i);
                 //rowElm.click(clickFunc); //textのfocusOutでlist自体がhide()されてclickが発動しないのでmousedownにしてみる
                 rowElm.mousedown(clickFunc);
@@ -150,6 +161,7 @@ var SuggestPicker;
                 this._listElement.append(emptyCaption);
             }
             else {
+                //this._changeListTarget(0);
             }
             this._listElement.show();
         };
@@ -431,9 +443,9 @@ var SuggestPicker;
             return $('<img width="12" height="12" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAaVBMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKCgoAAAASEhIKCgoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAVhQG9AAAAInRSTlMA8/B0UUf22KV9OikhHQ4C5t2UbExAGNDLysCxnnBvZTQHXpJmjAAAAIZJREFUGNNtj1cSgzAMRIVtcAuY0NKb7n/ISDsmX3k/2l2VGdE/+r6KPKBs3h8gVnP7aP/C7LOI1jAHmYksHDMtjQpHNAQkttMSi4yWO+9YAmVi0D1p54pg+vm5QTC21VuuNA4+Qgdc0eQBv9Q52Uojs9HtWfxZn3gbs2L3xacNIqV63Un/C9flDdGyoibdAAAAAElFTkSuQmCC" alt="">');
         };
         return Form;
-    })();
+    }());
     SuggestPicker.Form = Form;
-    var Params = (function () {
+    var Params = /** @class */ (function () {
         function Params() {
             this.allowNoList = false;
             this.noListLabel = '該当なし';
@@ -442,20 +454,24 @@ var SuggestPicker;
             this.hideListOnEmpty = false;
         }
         return Params;
-    })();
-    var Device = (function () {
+    }());
+    var Device = /** @class */ (function () {
         function Device() {
             this._ua = null;
             this._ua = window.navigator.userAgent.toLowerCase();
         }
         Device.prototype.isSoftwareKeyboard = function () {
             var ua = this._ua;
-            return (ua.indexOf("iphone") != -1 || ua.indexOf("ipad") != -1 || ua.indexOf("ipod") != -1 || ua.indexOf("android") != -1 || ua.indexOf("mobile") != -1);
+            return (ua.indexOf("iphone") != -1
+                || ua.indexOf("ipad") != -1
+                || ua.indexOf("ipod") != -1
+                || ua.indexOf("android") != -1
+                || ua.indexOf("mobile") != -1);
         };
         Device.prototype.isHardwareKeyboard = function () {
             return (!this.isSoftwareKeyboard());
         };
         return Device;
-    })();
+    }());
 })(SuggestPicker || (SuggestPicker = {}));
 //# sourceMappingURL=SuggestPicker.js.map

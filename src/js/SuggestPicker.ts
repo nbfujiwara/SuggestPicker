@@ -92,6 +92,22 @@ module SuggestPicker{
 			}
 			return true;
 		}
+        public setItemsByValues(valueList){
+            for(var i=0; i<valueList.length; i++){
+                for(var k=0; k<this._allList.length; k++){
+                	if(this._allList[k].value == valueList[i]){
+                        this._appendItem(this._allList[k].label, this._allList[k].value);
+					}
+                }
+            }
+            return true;
+        }
+        public clearItems(){
+            while(this._itemsElement.children('.sp_item').length > 0){
+                this._itemsElement.children('.sp_item').get(0).remove();
+            }
+        }
+
 		private _adjustItem(itemRow){
 			if(! itemRow.hasOwnProperty('value') && ! itemRow.hasOwnProperty('label') ){
 				return null;
